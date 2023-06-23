@@ -19,10 +19,13 @@ elseStatement: 'else' EndOfLine+ block;
 
 whileStatement: 'while' '(' Id 'in' expression ')' EndOfLine+ block EndOfLine+ 'endwhile';
 
-expression: Dolar Id;
+expression: reference | compReference;
 block: statement (EndOfLine+ statement)*;
 
-literal: (literalAtom | LiteralString)+;
-literalAtom: reference | compReference;
 reference: StartOfRef ReferenceId;
 compReference:  StartOfCompRef CompReferenceId (CompReferenceColon CompReferenceDefaultValue?)? EndOfCompReference;
+
+literal: (literalAtom | LiteralString)+;
+literalAtom: referenceInLiteral | compReferenceInLiteral;
+referenceInLiteral: StartOfRefInLiteral ReferenceId;
+compReferenceInLiteral:  StartOfCompRefInLiteral CompReferenceId (CompReferenceColon CompReferenceDefaultValue?)? EndOfCompReference;

@@ -14,7 +14,6 @@ EndOfLine: '\n';
 
 Semicolon: ';';
 Comma: ',';
-Dolar: '$';
 LeftBracket: '(';
 RightBracket: ')';
 LeftCurlyBracket: '{';
@@ -35,6 +34,8 @@ WhiteSpace: [ \t\r]+ -> skip;
 
 // -----------------------------------------
 ActionStart: (':' | 'do') -> pushMode(actionMode);
+StartOfCompRef: '${' -> pushMode(compReferenceMode);
+StartOfRef: ('$' | '@' | '#') -> pushMode(referenceMode);
 
 //------------------------------------------
 mode actionMode;
@@ -49,9 +50,8 @@ ParameterColon: ':' -> pushMode(literalMode);
 //------------------------------------------
 mode literalMode;
 LiteralModeSpace: '\r' -> skip;
-
-StartOfCompRef: '${' -> pushMode(compReferenceMode);
-StartOfRef: ('$' | '@' | '#') -> pushMode(referenceMode);
+StartOfCompRefInLiteral: '${' -> pushMode(compReferenceMode);
+StartOfRefInLiteral: ('$' | '@' | '#') -> pushMode(referenceMode);
 LiteralString: (LiteralEsacapedCharacter | ~[\n\r$@#;])+;
 fragment LiteralEsacapedCharacter: '\\' [\\$@#rnt;];
 LiteralEndOfLine: '\n' -> popMode;
