@@ -28,14 +28,21 @@ LessThan: '<';
 GreaterThanOrEquale: '>=';
 LessThanOrEquale: '<=';
 
-Id: [a-zA-Z][a-zA-Z0-9_]*;
+Not: '!';
+And: '&&' | 'and';
+Or: '||' | 'or';
 
-WhiteSpace: [ \t\r]+ -> skip;
-
-// -----------------------------------------
 ActionStart: (':' | 'do') -> pushMode(actionMode);
 StartOfCompRef: '${' -> pushMode(compReferenceMode);
 StartOfRef: ('$' | '@' | '#') -> pushMode(referenceMode);
+
+QuotedString: '"' (QuotedStringEscaped | ~[\n\r"])+ '"';
+fragment QuotedStringEscaped: '\\' [\\nrt"];
+ExpressionLiteral: ~[ \t\n\r$=&|!><)]+;
+
+Id: [a-zA-Z][a-zA-Z0-9_]*;
+
+WhiteSpace: [ \t\r]+ -> skip;
 
 //------------------------------------------
 mode actionMode;

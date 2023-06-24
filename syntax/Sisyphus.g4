@@ -19,7 +19,18 @@ elseStatement: 'else' EndOfLine+ block;
 
 whileStatement: 'while' '(' Id 'in' expression ')' EndOfLine+ block EndOfLine+ 'endwhile';
 
-expression: reference | compReference;
+compare: Equale | NotEquale | GreaterThan | LessThan | GreaterThanOrEquale | LessThanOrEquale;
+
+expression: logicalExpression;
+logicalExpression: orExpression;
+orExpression: andExpression (Or andExpression)*;
+andExpression: equalityExpression (And equalityExpression)*;
+equalityExpression: comparisonExpression (compare comparisonExpression)?;
+comparisonExpression: primaryExpression;
+primaryExpression: '(' logicalExpression ')' | Not primaryExpression | expressionValue;
+expressionValue: reference | compReference | constant;
+constant: QuotedString | ExpressionLiteral;
+
 block: statement (EndOfLine+ statement)*;
 
 reference: StartOfRef ReferenceId;

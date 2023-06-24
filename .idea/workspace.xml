@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7f87d12-8bad-4ba4-8324-5d26bf2c31ee" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/syntax/SisyphusLexer.tokens" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/syntax/Sisyphus.g4" beforeDir="false" afterPath="$PROJECT_DIR$/syntax/Sisyphus.g4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/syntax/SisyphusLexer.g4" beforeDir="false" afterPath="$PROJECT_DIR$/syntax/SisyphusLexer.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syntax_test/condition.ss" beforeDir="false" afterPath="$PROJECT_DIR$/syntax_test/condition.ss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syntax_test/simple.ss" beforeDir="false" afterPath="$PROJECT_DIR$/syntax_test/simple.ss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
