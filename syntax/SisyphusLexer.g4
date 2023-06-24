@@ -36,10 +36,13 @@ ActionStart: (':' | 'do') -> pushMode(actionMode);
 StartOfCompRef: '${' -> pushMode(compReferenceMode);
 StartOfRef: ('$' | '@' | '#') -> pushMode(referenceMode);
 
-QuotedString: '"' (QuotedStringEscaped | ~[\n\r"])+ '"';
-fragment QuotedStringEscaped: '\\' [\\nrt"];
-ExpressionLiteral: ~[ \t\n\r$=&|!><)]+;
+QuotedString: DoubleQuotedString | SingleQuotedString;
+DoubleQuotedString: '"' (DoubleQuotedStringEscaped | ~[\n\r"])+ '"';
+fragment DoubleQuotedStringEscaped: '\\' [\\nrt"];
+SingleQuotedString: '\'' (DoubleQuotedStringEscaped | ~[\n\r'])+ '\'';
+fragment SingleQuotedStringEscaped: '\\' [\\nrt'];
 
+Number: [0-9_]+ ('.' [0-9_]+)?;
 Id: [a-zA-Z][a-zA-Z0-9_]*;
 
 WhiteSpace: [ \t\r]+ -> skip;

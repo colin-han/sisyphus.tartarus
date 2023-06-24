@@ -1,6 +1,6 @@
 if ( $a >= 123) then
     : do something;
-elseif (!$b) then
+elseif (!123) then
     : do other thing;
 else
     : do something else;

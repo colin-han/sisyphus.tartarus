@@ -1,4 +1,4 @@
-parser grammar Sisyphus;
+parser grammar SisyphusParser;
 
 @header { package info.colinhan.sisyphus.parser; }
 options {
@@ -13,27 +13,31 @@ actionDefinition: ActionName positionedParameter? (LiteralEndOfLine namedParamet
 positionedParameter: literal;
 namedParameter: ParameterName ParameterColon literal;
 
-ifStatement: 'if' '(' expression ')' 'then'? EndOfLine+ block (EndOfLine+ elseifStatement)* (EndOfLine+ elseStatement)? EndOfLine+ 'endif';
-elseifStatement: 'elseif' '(' expression ')' 'then'? EndOfLine+ block;
+ifStatement: 'if' '(' logicalExpression ')' 'then'? EndOfLine+ block (EndOfLine+ elseifStatement)* (EndOfLine+ elseStatement)? EndOfLine+ 'endif';
+elseifStatement: 'elseif' '(' logicalExpression ')' 'then'? EndOfLine+ block;
 elseStatement: 'else' EndOfLine+ block;
 
-whileStatement: 'while' '(' Id 'in' expression ')' EndOfLine+ block EndOfLine+ 'endwhile';
+whileStatement: 'while' '(' Id 'in' arrayExpression ')' EndOfLine+ block EndOfLine+ 'endwhile';
 
 compare: Equale | NotEquale | GreaterThan | LessThan | GreaterThanOrEquale | LessThanOrEquale;
 
-expression: logicalExpression;
 logicalExpression: orExpression;
 orExpression: andExpression (Or andExpression)*;
 andExpression: equalityExpression (And equalityExpression)*;
 equalityExpression: comparisonExpression (compare comparisonExpression)?;
 comparisonExpression: primaryExpression;
 primaryExpression: '(' logicalExpression ')' | Not primaryExpression | expressionValue;
-expressionValue: reference | compReference | constant;
-constant: QuotedString | ExpressionLiteral;
+
+arrayExpression: expressionValue | array;
+array: '[' (expressionValue (',' expressionValue)*)? ']';
+
+expressionValue: reference | constant;
+constant: QuotedString | Number;
 
 block: statement (EndOfLine+ statement)*;
 
-reference: StartOfRef ReferenceId;
+reference: simpleReference | compReference;
+simpleReference: StartOfRef ReferenceId;
 compReference:  StartOfCompRef CompReferenceId (CompReferenceColon CompReferenceDefaultValue?)? EndOfCompReference;
 
 literal: (literalAtom | LiteralString)+;
