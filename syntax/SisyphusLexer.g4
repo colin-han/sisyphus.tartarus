@@ -1,4 +1,5 @@
 lexer grammar SisyphusLexer;
+@header { package info.colinhan.sisyphus.parser; }
 
 If: 'if';
 Then: 'then';

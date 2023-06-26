@@ -6,9 +6,9 @@ options {
 }
 
 diagram: block;
-statement: actionNode | ifStatement | whileStatement;
+statement: action | ifStatement | whileStatement;
 
-actionNode: ActionStart actionDefinition LiteralEndOfStatement;
+action: ActionStart actionDefinition LiteralEndOfStatement;
 actionDefinition: ActionName positionedParameter? (LiteralEndOfLine namedParameter)*;
 positionedParameter: literal;
 namedParameter: ParameterName ParameterColon literal;
