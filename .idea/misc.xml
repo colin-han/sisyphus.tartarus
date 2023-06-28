@@ -6,7 +6,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/syntax/SisyphusLexer.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="gen/info/colinhan/sisyphus/parser" />
+          <option name="outputDir" value="gen/info/colinhan/sisyphus/tartarus/parser" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />
@@ -26,7 +26,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/syntax/SisyphusParser.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="gen/info/colinhan/sisyphus/parser" />
+          <option name="outputDir" value="gen/info/colinhan/sisyphus/tartarus/parser" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />
