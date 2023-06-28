@@ -8,6 +8,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ModelToPlantUmlTransformerTest {
     @Test
+    public void testExample() {
+        Flow flow = readFlow("example.ss");
+        StringBuilder sb = new StringBuilder();
+        ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(sb);
+        transformer.visit(flow);
+        assertEquals("", sb.toString());
+    }
+
+    @Test
     public void testActions() {
         Flow flow = readFlow("actions.ss");
         StringBuilder sb = new StringBuilder();

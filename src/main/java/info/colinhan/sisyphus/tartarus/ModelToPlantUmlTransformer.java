@@ -102,7 +102,7 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
         this.writer.write(whileStatement.getVariableName());
         this.writer.write(" in ");
         this.visit(whileStatement.getArraySource());
-        this.writer.write("%s)\n");
+        this.writer.write(")\n");
         this.writer.indent();
         this.visit(whileStatement.getBlock());
         this.writer.unindent();
