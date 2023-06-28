@@ -4,51 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7f87d12-8bad-4ba4-8324-5d26bf2c31ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/IndentingWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/ModelToPlantUmlTransformer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/AbstractModelVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ModelVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Node.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/tartarus/ModelToPlantUmlTransformerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/ModelTransformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/ScriptToModelTransformer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/Transformer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Action.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Action.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/AndCondition.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/AndOr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/AndOr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/AndOrCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/AndOrCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/ArrayLiteral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ArrayLiteral.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/ArraySource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ArraySource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/CompareCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/CompareCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Comparison.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Comparison.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Condition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Condition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/ConditionalBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ConditionalBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Flow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Flow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/IfStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/IfStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Literal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Literal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/NotCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/NotCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Reference.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Reference.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/ReferenceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ReferenceType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/Statement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/TemplateNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/TemplateNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/TemplateString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/TemplateString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/ValueSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/ValueSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/model/WhileStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/model/WhileStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/parser/ErrorListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/parser/ErrorListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/runtime/ExecutionContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/info/colinhan/sisyphus/tartarus/runtime/ExecutionContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/ModelTransformerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/tartarus/ScriptToModelTransformerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/ParserTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/parser/SisyphusParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/tartarus/parser/TartarusParserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/utils/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/info/colinhan/sisyphus/tartarus/utils/TestUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/syntax_test/condition.ss" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/syntax_test/condition.ss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/syntax/SisyphusLexer.g4" beforeDir="false" afterPath="$PROJECT_DIR$/syntax/TartarusLexer.g4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/syntax/SisyphusParser.g4" beforeDir="false" afterPath="$PROJECT_DIR$/syntax/TartarusParser.g4" afterDir="false" />
-    </list>
+    <list default="true" id="e7f87d12-8bad-4ba4-8324-5d26bf2c31ee" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +39,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "master",
     "last_opened_file_path": "/Users/colin/projects/open-source/sisyphus.tartarus",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
