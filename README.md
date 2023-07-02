@@ -6,7 +6,7 @@
 : fillForm initDeploy
   by: @owner;
 
-if ($env = staging) then
+if ($env = "staging") then
   : fillForm configFeatureToggle
     by: @releaseOwner
     atLatest: 5 days before $releaseDate;
@@ -30,4 +30,4 @@ end
 
 可以生成一个类似于下图的工作流
 
-![example](http://www.plantuml.com/plantuml/png/dLAzReCm4Dxz53Sm90n1gjI5g6egHPagTUcE31nmhMDRvf8eYdZt7exRf1sxWBcVx-V3cv5ruCFUg7XG9UHvHyRiNDZdEP0btg8txgm0gge-LrK96tUo6DPAKGUB3EqHda2sUxBz4dX0AxD_S1fdE-ftgFaGyDtrlK4PkeCCQ52F-3OZfuxcLyquyjn_X5QVHwYnSm4XIzDRwQyLsfOwfKu36OI53-u3o48s7x3XSPdKDDgO5qyYPc3sPL5eJwkUsEXwrRXzSNmeF7aqPB6OTx_rkJOgh8EspP1UaJGI_l0EphGO8hDayOdNxnlx742CmaVfa0fpNf3iG7OvoWevEu7u14bMIlASdd-5bLsnxqNyq-3DtWLqmy9SGXj_DqnhDRBpQYCaSZs-0000)
+![example](//www.plantuml.com/plantuml/png/fLF1Yjim5BphAmRNXsoWDXHwyMxJj2nxAWHAxa6sdsqrYYHa9Kke---rP3KrgQ67zKaypvitCthQzevRTpv9Dcprgo8xiE4T4GrRIv9uJxjOJ4VWaJejQxBz7z3JKs5rgLsn-Rxxkjjl1lQN9X0pu5O02gpNIT88AL-qFIN9UWsXX7ic8_ML0Ka270xbzN0encCQ-XuPS2y640rMAQaBFY4P1xL2jSa3N4SAgolr3mnOQbkKK6dLYFQ5k3jRskksbSI0e2P-CqrpneZo_xdxnXtrRa9zHCslFKfgjALRp_E8y6v8rQ9Xm49wm6id965bhFu1eP3w0rKkEbfgkPcgk9HVZ0YUEkTCaUVSYAmLJl8og_Gfltp8ZJ0aXQ8yCCyTd5qtgI-9Mx98Ax7NHr8pJAdhcCDFb9QhgYkGJWVyYjQ20GRSBmmmXd4CPEytcCh1uHpcEPPQRnRzLSLhCo5Kn19SHuX18xsCVK8hFn9-I_ogV6R0FoispNYCwi1RBbISbsLPj1ILBwN_bkp_d_nIxhnoexC2TNWqFlRUQSEsf6h_Ydy3)

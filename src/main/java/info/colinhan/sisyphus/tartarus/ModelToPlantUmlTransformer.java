@@ -55,10 +55,25 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
     public Object visitAction(Action action) {
         this.writer.writeLine("|%s|", action.getAssignee(getAssigneeExecutionContext));
         this.writer.writeIndent();
-        this.writer.write(": **");
+        this.writer.write(": **\"\"");
         this.writer.write(action.getName());
-        this.writer.write("** ");
+        this.writer.write("\"\"** ");
         this.visit(action.getPositionedParameter());
+        Map<String, TemplateString> namedParameters = action.getNamedParameters();
+        if (!namedParameters.isEmpty()) {
+            int maxLength = namedParameters.keySet().stream()
+                    .map(String::length)
+                    .max(Integer::compareTo)
+                    .orElseThrow(() -> new IllegalStateException("No named parameters")) + 4;
+            namedParameters.forEach((k, v) -> {
+                this.writer.write("\n");
+                this.writer.writeIndent();
+                this.writer.write("\"\"  ");
+                this.writer.write(String.format("%1$" + maxLength + "s", "__" + k + "__"));
+                this.writer.write(":\"\" ");
+                this.visit(v);
+            });
+        }
         this.writer.write(";\n");
         return null;
     }
