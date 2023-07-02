@@ -116,9 +116,12 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
     @Override
     public Object visitReference(Reference reference) {
         if (reference.getDefaultValue() == null) {
-            this.writer.write("$" + reference.getVariableName());
+            this.writer.write(reference.getType().getValue() + reference.getVariableName());
         } else {
-            this.writer.write(String.format("${%s:%s}", reference.getVariableName(), reference.getDefaultValue()));
+            this.writer.write(String.format("%s{%s:%s}",
+                    reference.getType().getValue(),
+                    reference.getVariableName(),
+                    reference.getDefaultValue()));
         }
         return null;
     }
