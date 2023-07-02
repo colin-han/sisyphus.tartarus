@@ -3,6 +3,7 @@ package info.colinhan.sisyphus.tartarus;
 import info.colinhan.sisyphus.tartarus.model.*;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParser;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParserBaseVisitor;
+import info.colinhan.sisyphus.tartarus.runtime.NormalizeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -11,6 +12,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
     public Node visitDiagram(TartarusParser.DiagramContext ctx) {
         Flow flow = new Flow();
         flow.setBlock((Block)visitBlock(ctx.block()));
+        flow.accept(new NormalizeVisitor());
         return flow;
     }
 
@@ -87,7 +89,16 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
 
     @Override
     public Node visitWhileStatement(TartarusParser.WhileStatementContext ctx) {
-        WhileStatement result = new WhileStatement();
+        WhileStatement result = new WhileStatement(false);
+        result.setVariableName(ctx.Id().getText());
+        result.setArraySource((ArraySource) this.visit(ctx.arrayExpression()));
+        result.setBlock((Block) this.visit(ctx.block()));
+        return result;
+    }
+
+    @Override
+    public Node visitParallelStatement(TartarusParser.ParallelStatementContext ctx) {
+        WhileStatement result = new WhileStatement(true);
         result.setVariableName(ctx.Id().getText());
         result.setArraySource((ArraySource) this.visit(ctx.arrayExpression()));
         result.setBlock((Block) this.visit(ctx.block()));

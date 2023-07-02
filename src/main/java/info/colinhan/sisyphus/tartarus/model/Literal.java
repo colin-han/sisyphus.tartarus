@@ -22,4 +22,9 @@ public class Literal implements TemplateNode, ValueSource {
     public <T> T accept(ModelVisitor<? extends T> visitor) {
         return visitor.visitLiteral(this);
     }
+
+    @Override
+    public String toCode() {
+        return this.value;
+    }
 }

@@ -18,4 +18,8 @@ public enum ReferenceType {
         }
         return null;
     }
+
+    public String getValue() {
+        return value;
+    }
 }

@@ -5,11 +5,11 @@ If: 'if';
 Then: 'then';
 ElseIf: 'elseif';
 Else: 'else';
-EndIf: 'endif';
+End: 'end';
 
 While: 'while';
+Parallel: 'parallel';
 In: 'in';
-EndWhile: 'endwhile';
 
 EndOfLine: '\n';
 

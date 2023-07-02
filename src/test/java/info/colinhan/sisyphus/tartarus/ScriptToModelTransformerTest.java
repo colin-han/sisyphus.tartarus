@@ -3,6 +3,7 @@ package info.colinhan.sisyphus.tartarus;
 import info.colinhan.sisyphus.tartarus.model.Action;
 import info.colinhan.sisyphus.tartarus.model.Flow;
 import info.colinhan.sisyphus.tartarus.model.TemplateString;
+import info.colinhan.sisyphus.tartarus.model.WhileStatement;
 import info.colinhan.sisyphus.tartarus.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
@@ -21,5 +22,16 @@ class ScriptToModelTransformerTest {
         assertEquals(1, a1.getNamedParameters().size());
         Action a2 = (Action) flow.getBlock().getStatements().get(1);
         assertInstanceOf(TemplateString.class, a2.getNamedParameters().get("method"));
+    }
+
+    @Test
+    public void testParallel() {
+        ScriptToModelTransformer transformer = new ScriptToModelTransformer();
+        Flow flow = (Flow)transformer.visit(TestUtils.parseFile("parallel.ss"));
+        assertNotNull(flow);
+        assertEquals(1, flow.getBlock().getStatements().size());
+        assertInstanceOf(WhileStatement.class, flow.getBlock().getStatements().get(0));
+        WhileStatement whileStatement = (WhileStatement) flow.getBlock().getStatements().get(0);
+        assertTrue(whileStatement.isParallel());
     }
 }

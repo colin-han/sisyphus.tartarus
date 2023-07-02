@@ -1,5 +1,7 @@
 package info.colinhan.sisyphus.tartarus.model;
 
+import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,5 +32,18 @@ public class IfStatement implements Statement {
     @Override
     public <T> T accept(ModelVisitor<? extends T> visitor) {
         return visitor.visitIfStatement(this);
+    }
+
+    @Override
+    public String getAssignee(ExecutionContext context) {
+        for (ConditionalBlock thenBlock : this.thenBlocks) {
+            for (Statement statement : thenBlock.getBlock().getStatements()) {
+                return statement.getAssignee(context);
+            }
+        }
+        for (Statement statement : this.elseBlock.getStatements()) {
+            return statement.getAssignee(context);
+        }
+        return Constants.ROBOT;
     }
 }

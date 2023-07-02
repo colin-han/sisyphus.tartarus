@@ -1,5 +1,7 @@
 package info.colinhan.sisyphus.tartarus.model;
 
+import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
+
 import java.util.*;
 
 public class Action implements Statement {
@@ -38,6 +40,15 @@ public class Action implements Statement {
 
     public void setNamedParameter(String parameterName, TemplateString value) {
         this.namedParameters.put(parameterName, value);
+    }
+
+    @Override
+    public String getAssignee(ExecutionContext context) {
+        if (this.namedParameters.containsKey("by")) {
+            return context.getUser(this.namedParameters.get("by"));
+        } else {
+            return Constants.ROBOT;
+        }
     }
 
     @Override

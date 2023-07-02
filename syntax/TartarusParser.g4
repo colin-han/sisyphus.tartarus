@@ -6,18 +6,19 @@ options {
 }
 
 diagram: block;
-statement: action | ifStatement | whileStatement;
+statement: action | ifStatement | whileStatement | parallelStatement;
 
 action: ActionStart actionDefinition LiteralEndOfStatement;
 actionDefinition: ActionName positionedParameter? (LiteralEndOfLine namedParameter)*;
 positionedParameter: literal;
 namedParameter: ParameterName ParameterColon literal;
 
-ifStatement: 'if' '(' logicalExpression ')' 'then'? EndOfLine+ block (EndOfLine+ elseifStatement)* (EndOfLine+ elseStatement)? EndOfLine+ 'endif';
+ifStatement: 'if' '(' logicalExpression ')' 'then'? EndOfLine+ block (EndOfLine+ elseifStatement)* (EndOfLine+ elseStatement)? EndOfLine+ 'end';
 elseifStatement: 'elseif' '(' logicalExpression ')' 'then'? EndOfLine+ block;
 elseStatement: 'else' EndOfLine+ block;
 
-whileStatement: 'while' '(' Id 'in' arrayExpression ')' EndOfLine+ block EndOfLine+ 'endwhile';
+whileStatement: 'while' '(' Id 'in' arrayExpression ')' EndOfLine+ block EndOfLine+ 'end';
+parallelStatement: 'parallel' '(' Id 'in' arrayExpression ')' EndOfLine+ block EndOfLine+ 'end';
 
 compare: Equale | NotEquale | GreaterThan | LessThan | GreaterThanOrEquale | LessThanOrEquale;
 

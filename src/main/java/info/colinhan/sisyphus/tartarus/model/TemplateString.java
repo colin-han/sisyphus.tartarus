@@ -4,6 +4,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TemplateString implements ValueSource {
     private List<TemplateNode> nodes = new ArrayList<>();
@@ -29,5 +30,9 @@ public class TemplateString implements ValueSource {
     @Override
     public <T> T accept(ModelVisitor<? extends T> visitor) {
         return visitor.visitTemplateString(this);
+    }
+
+    public String toCode() {
+        return this.nodes.stream().map(TemplateNode::toCode).collect(Collectors.joining());
     }
 }

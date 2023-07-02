@@ -4,4 +4,4 @@ elseif (! $def) then
     : do other thing for ${user:aaa} ;
 else
     : do something else;
-endif
+end

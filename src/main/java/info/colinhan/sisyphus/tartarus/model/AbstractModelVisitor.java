@@ -72,7 +72,9 @@ public abstract class AbstractModelVisitor<T> implements ModelVisitor<T> {
         for (ConditionalBlock thenBlock : ifStatement.getThenBlocks()) {
             result.set(this.visit(thenBlock));
         }
-        result.set(this.visit(ifStatement.getElseBlock()));
+        if (ifStatement.getElseBlock() != null) {
+            result.set(this.visit(ifStatement.getElseBlock()));
+        }
         return result.get();
     }
 

@@ -1,13 +1,13 @@
 package info.colinhan.sisyphus.tartarus;
 
 import info.colinhan.sisyphus.tartarus.model.*;
+import info.colinhan.sisyphus.tartarus.runtime.GetAssigneeExecutionContext;
+import info.colinhan.sisyphus.tartarus.runtime.SwimLaneCollector;
 
 import java.io.FileWriter;
-import java.util.List;
+import java.util.*;
 
 public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
-    private final IndentingWriter writer;
-
     public ModelToPlantUmlTransformer(StringBuilder stringBuilder) {
         this.writer = new IndentingWriter(stringBuilder);
     }
@@ -20,8 +20,18 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
         this.writer = new IndentingWriter(fileWriter);
     }
 
-    private void start() {
+    private static class SwimLane {
+        private String name;
+        private String text;
+    }
+
+    private final IndentingWriter writer;
+    private final GetAssigneeExecutionContext getAssigneeExecutionContext = new GetAssigneeExecutionContext();
+
+    private void start(Flow flow) {
         this.writer.writeLine("@startuml");
+        SwimLaneCollector swimLaneCollector = new SwimLaneCollector(this.writer, this.getAssigneeExecutionContext);
+        flow.accept(swimLaneCollector);
         this.writer.writeLine("start");
         this.writer.indent();
     }
@@ -34,14 +44,16 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
 
     @Override
     public Object visitFlow(Flow flow) {
-        this.start();
+        this.start(flow);
         super.visitFlow(flow);
         this.stop();
         return null;
     }
 
+
     @Override
     public Object visitAction(Action action) {
+        this.writer.writeLine("|%s|", action.getAssignee(getAssigneeExecutionContext));
         this.writer.writeIndent();
         this.writer.write(": **");
         this.writer.write(action.getName());
@@ -53,6 +65,7 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
 
     @Override
     public Object visitIfStatement(IfStatement ifStatement) {
+        this.writer.writeLine("|%s|", ifStatement.getAssignee(getAssigneeExecutionContext));
         this.writer.writeIndent();
         this.writer.write("if (");
         this.visit(ifStatement.getThenBlocks().get(0).getCondition());
@@ -97,16 +110,39 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
 
     @Override
     public Object visitWhileStatement(WhileStatement whileStatement) {
-        this.writer.writeIndent();
-        this.writer.write("while (");
-        this.writer.write(whileStatement.getVariableName());
-        this.writer.write(" in ");
-        this.visit(whileStatement.getArraySource());
-        this.writer.write(")\n");
-        this.writer.indent();
-        this.visit(whileStatement.getBlock());
-        this.writer.unindent();
-        this.writer.writeLine("endwhile");
+        String variableName = whileStatement.getVariableName();
+        getAssigneeExecutionContext.registerAlias(variableName, whileStatement.getArraySource());
+        String assignee = whileStatement.getAssignee(getAssigneeExecutionContext);
+        this.writer.writeLine("|%s|", assignee);
+        if (whileStatement.isParallel()) {
+            this.writer.writeLine("fork");
+            this.writer.indent();
+            this.writer.writeIndent();
+            this.writer.write("-> ");
+            this.writer.write(whileStatement.getVariableName());
+            this.writer.write(" in ");
+            this.visit(whileStatement.getArraySource());
+            this.writer.write(";\n");
+            this.visit(whileStatement.getBlock());
+            this.writer.unindent();
+            this.writer.writeLine("fork again");
+            this.writer.indent();
+            this.writer.writeLine(": ...;");
+            this.writer.unindent();
+            this.writer.writeLine("end fork");
+        } else {
+            this.writer.writeIndent();
+            this.writer.write("while (");
+            this.writer.write(whileStatement.getVariableName());
+            this.writer.write(" in ");
+            this.visit(whileStatement.getArraySource());
+            this.writer.write(")\n");
+            this.writer.indent();
+            this.visit(whileStatement.getBlock());
+            this.writer.unindent();
+            this.writer.writeLine("endwhile");
+        }
+        getAssigneeExecutionContext.unregisterAlias(variableName);
         return null;
     }
 

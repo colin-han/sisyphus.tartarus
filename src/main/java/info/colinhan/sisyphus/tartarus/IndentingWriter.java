@@ -72,6 +72,10 @@ public class IndentingWriter {
         indentLevel--;
     }
 
+    public void bookmark() {
+        writeLine("===");
+    }
+
     public void write(String s) {
         writer.write(s);
     }

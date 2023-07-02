@@ -13,11 +13,13 @@ public class TestUtils {
     public static TartarusParser.DiagramContext parseFile(String filename) {
         InputStream stream = TestUtils.class.getClassLoader().getResourceAsStream("syntax_test/" + filename);
         try {
+            ErrorListener errors = new ErrorListener();
             TartarusLexer lexer = new TartarusLexer(CharStreams.fromStream(stream));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(errors);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TartarusParser parser = new TartarusParser(tokens);
             parser.removeErrorListeners();
-            ErrorListener errors = new ErrorListener();
             parser.addErrorListener(errors);
             TartarusParser.DiagramContext diagram = parser.diagram();
             if (errors.hasError()) {

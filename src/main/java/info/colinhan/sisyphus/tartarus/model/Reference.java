@@ -48,4 +48,13 @@ public class Reference implements TemplateNode, ValueSource, ArraySource, Condit
     public <T> T accept(ModelVisitor<? extends T> visitor) {
         return visitor.visitReference(this);
     }
+
+    @Override
+    public String toCode() {
+        if (this.defaultValue != null) {
+            return String.format("%s{%s:%s}", this.type.getValue(), this.variableName, this.defaultValue);
+        } else {
+            return this.type.getValue() + this.variableName;
+        }
+    }
 }
