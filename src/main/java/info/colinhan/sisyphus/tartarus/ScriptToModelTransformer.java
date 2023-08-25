@@ -11,7 +11,11 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
     @Override
     public Node visitDiagram(TartarusParser.DiagramContext ctx) {
         Flow flow = new Flow();
-        flow.setBlock((Block)visitBlock(ctx.block()));
+        if (ctx.block() != null) {
+            flow.setBlock((Block) visitBlock(ctx.block()));
+        } else {
+            flow.setBlock(new Block());
+        }
         flow.accept(new NormalizeVisitor());
         return flow;
     }

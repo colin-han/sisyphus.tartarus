@@ -5,7 +5,7 @@ options {
     tokenVocab=TartarusLexer;
 }
 
-diagram: block;
+diagram: block?;
 statement: action | ifStatement | whileStatement | parallelStatement;
 
 action: ActionStart actionDefinition LiteralEndOfStatement;

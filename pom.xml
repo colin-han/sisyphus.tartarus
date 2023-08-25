@@ -7,6 +7,7 @@
     <groupId>info.colinhan</groupId>
     <artifactId>sisyphus.tartarus</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>SisyphusTartarus</name>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -24,6 +25,11 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.9.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml-mit</artifactId>
+            <version>1.2023.10</version>
         </dependency>
     </dependencies>
     <build>
