@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus.model;
 
-public class CompareCondition implements Condition {
+public class CompareCondition extends AbstractNode implements Condition {
     private ValueSource left;
     private Comparison comparison;
     private ValueSource right;

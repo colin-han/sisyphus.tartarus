@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus.model;
 
-public class ConditionalBlock implements Node {
+public class ConditionalBlock extends AbstractNode implements Node {
     private Condition condition;
     private Block block;
 

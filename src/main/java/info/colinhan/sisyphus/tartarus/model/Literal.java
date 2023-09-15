@@ -2,7 +2,7 @@ package info.colinhan.sisyphus.tartarus.model;
 
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
-public class Literal implements TemplateNode, ValueSource {
+public class Literal extends AbstractNode implements TemplateNode, ValueSource {
     private String value;
 
     public String getValue() {

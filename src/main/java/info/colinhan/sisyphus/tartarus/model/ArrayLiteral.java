@@ -5,7 +5,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayLiteral implements ValueSource {
+public class ArrayLiteral extends AbstractNode implements ValueSource {
     private List<ValueSource> values = new ArrayList<>();
 
     public List<ValueSource> getValues() {

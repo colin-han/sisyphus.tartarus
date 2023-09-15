@@ -5,7 +5,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IfStatement implements Statement {
+public class IfStatement extends AbstractStatement implements Statement {
     private List<ConditionalBlock> thenBlocks = new ArrayList<>();
     private Block elseBlock;
 

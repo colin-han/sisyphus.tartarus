@@ -4,7 +4,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.*;
 
-public class Action implements Statement {
+public class Action extends AbstractStatement implements Statement {
     private String id;
     private String name;
     private TemplateString positionedParameter;

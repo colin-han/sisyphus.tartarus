@@ -2,7 +2,7 @@ package info.colinhan.sisyphus.tartarus.model;
 
 import java.util.List;
 
-public class AndOrCondition implements Condition {
+public class AndOrCondition extends AbstractNode implements Condition {
     private final AndOr operator;
     private List<Condition> conditions;
 

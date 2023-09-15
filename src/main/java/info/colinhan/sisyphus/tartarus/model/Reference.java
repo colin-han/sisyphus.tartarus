@@ -4,7 +4,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.List;
 
-public class Reference implements TemplateNode, ValueSource, ArraySource, Condition {
+public class Reference extends AbstractNode implements TemplateNode, ValueSource, ArraySource, Condition {
     private ReferenceType type = ReferenceType.VARIABLE;
     private String variableName;
     private String defaultValue;

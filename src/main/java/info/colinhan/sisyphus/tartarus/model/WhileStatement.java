@@ -2,7 +2,7 @@ package info.colinhan.sisyphus.tartarus.model;
 
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
-public class WhileStatement implements Statement {
+public class WhileStatement extends AbstractStatement implements Statement {
     private final boolean parallel;
     private String variableName;
     private ArraySource arraySource;

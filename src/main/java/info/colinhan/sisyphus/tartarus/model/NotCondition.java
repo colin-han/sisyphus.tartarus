@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus.model;
 
-public class NotCondition implements Condition {
+public class NotCondition extends AbstractNode implements Condition {
     private Condition condition;
 
     public Condition getCondition() {

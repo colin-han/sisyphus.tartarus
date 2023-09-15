@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TemplateString implements ValueSource {
+public class TemplateString extends AbstractNode implements ValueSource {
     private List<TemplateNode> nodes = new ArrayList<>();
 
     public List<TemplateNode> getNodes() {

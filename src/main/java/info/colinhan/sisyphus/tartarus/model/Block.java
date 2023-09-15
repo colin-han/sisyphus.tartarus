@@ -3,7 +3,7 @@ package info.colinhan.sisyphus.tartarus.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block implements Node {
+public class Block extends AbstractNode implements Node {
     private List<Statement> statements = new ArrayList<>();
 
     public List<Statement> getStatements() {

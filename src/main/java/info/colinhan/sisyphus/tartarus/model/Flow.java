@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus.model;
 
-public class Flow implements Node {
+public class Flow extends AbstractNode implements Node {
     private Block block;
 
     public Block getBlock() {
