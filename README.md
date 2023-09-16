@@ -1,5 +1,7 @@
 # sisyphus.tartarus
 
+A workflow definition language similar to plantuml. 
+
 一个类似于plantuml的工作流定义语言。
 
 ```
@@ -27,6 +29,8 @@ end
   body: { action: deploy }
   auth: bearer #ciToken;
 ```
+
+A workflow similar to the one below can be generated
 
 可以生成一个类似于下图的工作流
 
