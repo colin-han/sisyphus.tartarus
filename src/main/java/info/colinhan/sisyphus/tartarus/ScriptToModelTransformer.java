@@ -54,6 +54,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
                 result.addNode((TemplateNode) this.visitLiteralAtom((TartarusParser.LiteralAtomContext)child));
             } else if (child instanceof TerminalNode) {
                 Literal literalStr = new Literal();
+                literalStr.setType(LiteralType.STRING);
                 literalStr.setValue(child.getText());
                 result.addNode(literalStr);
             }
@@ -62,11 +63,13 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
             TemplateNode first = result.getNodes().get(0);
             if (first instanceof Literal) {
                 Literal firstLiteral = (Literal) first;
+                firstLiteral.setType(LiteralType.STRING);
                 firstLiteral.setValue(firstLiteral.getValue().replaceAll("^\\s+", ""));
             }
             TemplateNode last = result.getNodes().get(result.getNodes().size() - 1);
             if (last instanceof Literal) {
                 Literal lastLiteral = (Literal) last;
+                lastLiteral.setType(LiteralType.STRING);
                 lastLiteral.setValue(lastLiteral.getValue().replaceAll("\\s+$", ""));
             }
         }
@@ -202,7 +205,14 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
     @Override
     public Node visitConstant(TartarusParser.ConstantContext ctx) {
         Literal literal= new Literal();
-        literal.setValue(ctx.getText());
+        String text = ctx.getText();
+        if (text.startsWith("\"")) {
+            literal.setType(LiteralType.STRING);
+            literal.setValue(text.substring(1, text.length() - 1));
+        } else {
+            literal.setType(LiteralType.NUMBER);
+            literal.setValue(text);
+        }
         return literal;
     }
 

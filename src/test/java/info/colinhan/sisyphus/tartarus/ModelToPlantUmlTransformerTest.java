@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ModelToPlantUmlTransformerTest {
     @Test
     public void testExample() {
-        Flow flow = readFlow("example.ss");
+        Flow flow = TestUtils.readFlow("example.ss");
         StringBuilder sb = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(sb);
         transformer.visit(flow);
@@ -18,7 +18,7 @@ class ModelToPlantUmlTransformerTest {
 
     @Test
     public void testActions() {
-        Flow flow = readFlow("actions.ss");
+        Flow flow = TestUtils.readFlow("actions.ss");
         StringBuilder sb = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(sb);
         transformer.visit(flow);
@@ -27,15 +27,11 @@ class ModelToPlantUmlTransformerTest {
 
     @Test
     public void testIfStatements() {
-        Flow flow = readFlow("condition.ss");
+        Flow flow = TestUtils.readFlow("condition.ss");
         StringBuilder sb = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(sb);
         transformer.visit(flow);
         assertEquals("", sb.toString());
     }
 
-    private static Flow readFlow(String filename) {
-        ScriptToModelTransformer transformer = new ScriptToModelTransformer();
-        return (Flow)transformer.visit(TestUtils.parseFile(filename));
-    }
 }

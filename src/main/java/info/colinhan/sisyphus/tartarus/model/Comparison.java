@@ -27,4 +27,11 @@ public enum Comparison {
     public String toString() {
         return this.value;
     }
+
+    public String toBPMNExprString() {
+        if (this == EQUALS) {
+            return "==";
+        }
+        return this.value;
+    }
 }

@@ -1,5 +1,7 @@
 package info.colinhan.sisyphus.tartarus.utils;
 
+import info.colinhan.sisyphus.tartarus.ScriptToModelTransformer;
+import info.colinhan.sisyphus.tartarus.model.Flow;
 import info.colinhan.sisyphus.tartarus.parser.ErrorListener;
 import info.colinhan.sisyphus.tartarus.parser.TartarusLexer;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParser;
@@ -30,5 +32,10 @@ public class TestUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Flow readFlow(String filename) {
+        ScriptToModelTransformer transformer = new ScriptToModelTransformer();
+        return (Flow)transformer.visit(parseFile(filename));
     }
 }
