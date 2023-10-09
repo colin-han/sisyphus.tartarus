@@ -1,5 +1,6 @@
 package info.colinhan.sisyphus.tartarus.runtime;
 
+import info.colinhan.sisyphus.model.ReferenceType;
 import info.colinhan.sisyphus.tartarus.model.*;
 
 import java.util.HashMap;

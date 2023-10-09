@@ -1,5 +1,12 @@
 package info.colinhan.sisyphus.tartarus;
 
+import info.colinhan.sisyphus.context.VariableValidationContext;
+import info.colinhan.sisyphus.model.ReferenceType;
+import info.colinhan.sisyphus.model.VariableType;
+import info.colinhan.sisyphus.model.VariableTypes;
+import info.colinhan.sisyphus.tartarus.action.ActionDefinition;
+import info.colinhan.sisyphus.tartarus.action.BuiltInActions;
+import info.colinhan.sisyphus.tartarus.exceptions.TartarusValidationException;
 import info.colinhan.sisyphus.tartarus.model.*;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParser;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParserBaseVisitor;
@@ -7,7 +14,16 @@ import info.colinhan.sisyphus.tartarus.runtime.NormalizeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
+    private final VariableValidationContext context;
+
+    public ScriptToModelTransformer(VariableValidationContext context) {
+        this.context = context;
+    }
+
     @Override
     public Node visitDiagram(TartarusParser.DiagramContext ctx) {
         Flow flow = new Flow();
@@ -31,18 +47,43 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
 
     @Override
     public Node visitAction(TartarusParser.ActionContext ctx) {
-        Action action = new Action();
         TartarusParser.ActionDefinitionContext actionDefinitionContext = ctx.actionDefinition();
-        action.setName(actionDefinitionContext.ActionName().getText());
+        String name = actionDefinitionContext.ActionName().getText();
+        TemplateString positionedParameter = null;
         if (actionDefinitionContext.positionedParameter() != null) {
-            action.setPositionedParameter((TemplateString)this.visitLiteral(actionDefinitionContext.positionedParameter().literal()));
+            positionedParameter = (TemplateString) this.visitLiteral(actionDefinitionContext.positionedParameter().literal());
         }
+        Map<String, TemplateString> namedParameters = new HashMap<>();
+        Map<String, VariableType> namedParameterTypes = new HashMap<>();
         for (TartarusParser.NamedParameterContext namedParameterContext : actionDefinitionContext.namedParameter()) {
-            action.setNamedParameter(
-                    namedParameterContext.ParameterName().getText(),
-                    (TemplateString)this.visit(namedParameterContext.literal())
+            String parameterName = namedParameterContext.ParameterName().getText();
+            TemplateString parameterValue = (TemplateString) this.visit(namedParameterContext.literal());
+            namedParameters.put(
+                    parameterName,
+                    parameterValue
             );
+            namedParameterTypes.put(parameterName, parameterValue.getValueType(context));
         }
+
+        ActionDefinition definition = BuiltInActions.get(name);
+        if (definition == null) {
+            throw TartarusValidationException.withWrapper("Unknown action: " + name);
+        }
+
+        try {
+            definition.validate(
+                    TemplateString.getValueType(positionedParameter, context),
+                    namedParameterTypes,
+                    context
+            );
+        } catch (TartarusValidationException e) {
+            throw new RuntimeException(e);
+        }
+
+        Action action = new Action();
+        action.setName(name);
+        action.setNamedParameter(definition.getDefaultParameter().getName(), positionedParameter);
+        namedParameters.forEach(action::setNamedParameter);
         return action;
     }
 
@@ -54,7 +95,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
                 result.addNode((TemplateNode) this.visitLiteralAtom((TartarusParser.LiteralAtomContext)child));
             } else if (child instanceof TerminalNode) {
                 Literal literalStr = new Literal();
-                literalStr.setType(LiteralType.STRING);
+                literalStr.setType(VariableTypes.STRING);
                 literalStr.setValue(child.getText());
                 result.addNode(literalStr);
             }
@@ -63,13 +104,13 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
             TemplateNode first = result.getNodes().get(0);
             if (first instanceof Literal) {
                 Literal firstLiteral = (Literal) first;
-                firstLiteral.setType(LiteralType.STRING);
+                firstLiteral.setType(VariableTypes.STRING);
                 firstLiteral.setValue(firstLiteral.getValue().replaceAll("^\\s+", ""));
             }
             TemplateNode last = result.getNodes().get(result.getNodes().size() - 1);
             if (last instanceof Literal) {
                 Literal lastLiteral = (Literal) last;
-                lastLiteral.setType(LiteralType.STRING);
+                lastLiteral.setType(VariableTypes.STRING);
                 lastLiteral.setValue(lastLiteral.getValue().replaceAll("\\s+$", ""));
             }
         }
@@ -207,10 +248,10 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
         Literal literal= new Literal();
         String text = ctx.getText();
         if (text.startsWith("\"")) {
-            literal.setType(LiteralType.STRING);
+            literal.setType(VariableTypes.STRING);
             literal.setValue(text.substring(1, text.length() - 1));
         } else {
-            literal.setType(LiteralType.NUMBER);
+            literal.setType(VariableTypes.NUMBER);
             literal.setValue(text);
         }
         return literal;

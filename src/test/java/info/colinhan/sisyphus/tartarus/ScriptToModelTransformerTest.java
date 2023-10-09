@@ -4,6 +4,7 @@ import info.colinhan.sisyphus.tartarus.model.Action;
 import info.colinhan.sisyphus.tartarus.model.Flow;
 import info.colinhan.sisyphus.tartarus.model.TemplateString;
 import info.colinhan.sisyphus.tartarus.model.WhileStatement;
+import info.colinhan.sisyphus.tartarus.utils.MockVariableValidationContext;
 import info.colinhan.sisyphus.tartarus.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScriptToModelTransformerTest {
     @Test
     public void testActions() {
-        ScriptToModelTransformer transformer = new ScriptToModelTransformer();
+        ScriptToModelTransformer transformer = new ScriptToModelTransformer(new MockVariableValidationContext());
         Flow flow = (Flow)transformer.visit(TestUtils.parseFile("actions.ss"));
         assertNotNull(flow);
         assertEquals(2, flow.getBlock().getStatements().size());
@@ -26,7 +27,7 @@ class ScriptToModelTransformerTest {
 
     @Test
     public void testParallel() {
-        ScriptToModelTransformer transformer = new ScriptToModelTransformer();
+        ScriptToModelTransformer transformer = new ScriptToModelTransformer(new MockVariableValidationContext());
         Flow flow = (Flow)transformer.visit(TestUtils.parseFile("parallel.ss"));
         assertNotNull(flow);
         assertEquals(1, flow.getBlock().getStatements().size());

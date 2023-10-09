@@ -1,5 +1,8 @@
 package info.colinhan.sisyphus.tartarus.model;
 
+import info.colinhan.sisyphus.context.VariableValidationContext;
+import info.colinhan.sisyphus.model.VariableType;
+import info.colinhan.sisyphus.model.VariableTypes;
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.ArrayList;
@@ -25,6 +28,24 @@ public class TemplateString extends AbstractNode implements ValueSource {
     public Object getValue(ExecutionContext context) {
         // TODO:
         return null;
+    }
+
+    @Override
+    public VariableType getValueType(VariableValidationContext context) {
+        if (this.nodes.size() == 1) {
+            return this.nodes.get(0).getValueType(context);
+        } else if (this.nodes.size() > 1) {
+            return VariableTypes.STRING;
+        } else {
+            return VariableTypes.UNKNOWN;
+        }
+    }
+
+    public static VariableType getValueType(TemplateString templateString, VariableValidationContext context) {
+        if (templateString == null) {
+            return null;
+        }
+        return templateString.getValueType(context);
     }
 
     @Override

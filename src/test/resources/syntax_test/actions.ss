@@ -1,4 +1,4 @@
-: fillForm form1
+: showForm form1
     by: @owner;
 
 do callApi http://www.google.com

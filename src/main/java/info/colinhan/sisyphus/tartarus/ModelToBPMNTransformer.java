@@ -1,7 +1,7 @@
 package info.colinhan.sisyphus.tartarus;
 
+import info.colinhan.sisyphus.model.ReferenceType;
 import info.colinhan.sisyphus.tartarus.exceptions.TartarusExecutionException;
-import info.colinhan.sisyphus.tartarus.exceptions.TartarusValidationException;
 import info.colinhan.sisyphus.tartarus.model.*;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -139,7 +139,7 @@ public class ModelToBPMNTransformer extends AbstractModelVisitor<Void> {
             if (action.getNamedParameters().containsKey("by")) {
                 TemplateString by = action.getNamedParameters().get("by");
                 if (by.getNodes().size() != 1) {
-                    throw new TartarusExecutionException("'by' parameter should be a ref to user or group!");
+                    throw TartarusExecutionException.withWrapper("'by' parameter should be a ref to user or group!");
                 }
                 TemplateNode templateNode = by.getNodes().get(0);
                 if (templateNode instanceof Reference) {
@@ -149,7 +149,7 @@ public class ModelToBPMNTransformer extends AbstractModelVisitor<Void> {
                     } else if (ref.getType() == ReferenceType.VARIABLE) {
                         writer.writeAttribute("http://activiti.org/bpmn", "assignee", "${" + ref.getVariableName() + "}");
                     } else {
-                        throw new TartarusExecutionException("Env type reference is not supported in 'by' parameter!");
+                        throw TartarusExecutionException.withWrapper("Env type reference is not supported in 'by' parameter!");
                     }
                 }
             }

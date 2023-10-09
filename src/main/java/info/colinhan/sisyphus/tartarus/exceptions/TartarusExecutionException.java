@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus.exceptions;
 
-public class TartarusExecutionException extends RuntimeException {
+public class TartarusExecutionException extends Exception {
     public TartarusExecutionException() {
         super();
     }
@@ -11,5 +11,12 @@ public class TartarusExecutionException extends RuntimeException {
 
     public TartarusExecutionException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public static RuntimeException withWrapper(String message) {
+        return new RuntimeException(new TartarusExecutionException(message));
+    }
+    public static RuntimeException withWrapper(String message, Throwable cause) {
+        return new RuntimeException(new TartarusExecutionException(message, cause));
     }
 }
