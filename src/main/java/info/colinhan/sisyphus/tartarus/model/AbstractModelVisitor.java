@@ -11,8 +11,7 @@ public abstract class AbstractModelVisitor<T> implements ModelVisitor<T> {
     @Override
     public T visitAction(Action action) {
         AtomicReference<T> result = new AtomicReference<>(null);
-        result.set(visit(action.getPositionedParameter()));
-        action.getNamedParameters().forEach((__, np) -> {
+        action.getParameters().forEach((__, np) -> {
             result.set(this.visit(np));
         });
         return result.get();

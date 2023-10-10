@@ -59,7 +59,7 @@ public class ModelToPlantUmlTransformer extends AbstractModelVisitor<Object> {
         this.writer.write(action.getName());
         this.writer.write("\"\"** ");
         this.visit(action.getPositionedParameter());
-        Map<String, TemplateString> namedParameters = action.getNamedParameters();
+        Map<String, ValueSource> namedParameters = action.getNamedParameters();
         if (!namedParameters.isEmpty()) {
             int maxLength = namedParameters.keySet().stream()
                     .map(String::length)

@@ -1,14 +1,24 @@
 package info.colinhan.sisyphus.tartarus.model;
 
+import info.colinhan.sisyphus.tartarus.action.ActionDefinition;
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.*;
 
 public class Action extends AbstractStatement implements Statement {
     private String id;
-    private String name;
-    private TemplateString positionedParameter;
-    private Map<String, TemplateString> namedParameters = new HashMap<>();
+    private final String name;
+    private final ActionDefinition definition;
+    private final Map<String, ValueSource> parameters = new HashMap<>();
+
+    public Action(ActionDefinition definition, String name) {
+        this.definition = definition;
+        this.name = name;
+    }
+
+    public boolean hasParameter(String parameterName) {
+        return this.getParameters().containsKey(parameterName);
+    }
 
     public String getId() {
         return id;
@@ -22,30 +32,40 @@ public class Action extends AbstractStatement implements Statement {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public ActionDefinition getDefinition() {
+        return definition;
     }
 
-    public TemplateString getPositionedParameter() {
-        return positionedParameter;
+    public Map<String, ValueSource> getParameters() {
+        return parameters;
     }
 
-    public void setPositionedParameter(TemplateString positionedParameter) {
-        this.positionedParameter = positionedParameter;
+    public void setParameter(String parameterName, ValueSource value) {
+        this.parameters.put(parameterName, value);
     }
 
-    public Map<String, TemplateString> getNamedParameters() {
+    public ValueSource getParameter(String parameterName) {
+        return this.parameters.get(parameterName);
+    }
+
+    public Map<String, ValueSource> getNamedParameters() {
+        Map<String, ValueSource> namedParameters = new HashMap<>();
+        this.parameters.forEach((name, value) -> {
+            if (!name.equals(this.definition.getDefaultParameter().getName())) {
+                namedParameters.put(name, value);
+            }
+        });
         return namedParameters;
     }
 
-    public void setNamedParameter(String parameterName, TemplateString value) {
-        this.namedParameters.put(parameterName, value);
+    public ValueSource getPositionedParameter() {
+        return this.getParameter(this.definition.getDefaultParameter().getName());
     }
 
     @Override
     public String getAssignee(ExecutionContext context) {
-        if (this.namedParameters.containsKey("by")) {
-            return context.getUser(this.namedParameters.get("by"));
+        if (this.parameters.containsKey("by")) {
+            return context.getUser(this.parameters.get("by"));
         } else {
             return Constants.ROBOT;
         }

@@ -49,15 +49,15 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
     public Node visitAction(TartarusParser.ActionContext ctx) {
         TartarusParser.ActionDefinitionContext actionDefinitionContext = ctx.actionDefinition();
         String name = actionDefinitionContext.ActionName().getText();
-        TemplateString positionedParameter = null;
+        ValueSource positionedParameter = null;
         if (actionDefinitionContext.positionedParameter() != null) {
-            positionedParameter = (TemplateString) this.visitLiteral(actionDefinitionContext.positionedParameter().literal());
+            positionedParameter = (ValueSource) this.visitLiteral(actionDefinitionContext.positionedParameter().literal());
         }
-        Map<String, TemplateString> namedParameters = new HashMap<>();
+        Map<String, ValueSource> namedParameters = new HashMap<>();
         Map<String, VariableType> namedParameterTypes = new HashMap<>();
         for (TartarusParser.NamedParameterContext namedParameterContext : actionDefinitionContext.namedParameter()) {
             String parameterName = namedParameterContext.ParameterName().getText();
-            TemplateString parameterValue = (TemplateString) this.visit(namedParameterContext.literal());
+            ValueSource parameterValue = (ValueSource) this.visit(namedParameterContext.literal());
             namedParameters.put(
                     parameterName,
                     parameterValue
@@ -72,7 +72,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
 
         try {
             definition.validate(
-                    TemplateString.getValueType(positionedParameter, context),
+                    ValueSource.getValueType(positionedParameter, context),
                     namedParameterTypes,
                     context
             );
@@ -80,10 +80,9 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
             throw new RuntimeException(e);
         }
 
-        Action action = new Action();
-        action.setName(name);
-        action.setNamedParameter(definition.getDefaultParameter().getName(), positionedParameter);
-        namedParameters.forEach(action::setNamedParameter);
+        Action action = new Action(definition, name);
+        action.setParameter(definition.getDefaultParameter().getName(), positionedParameter);
+        namedParameters.forEach(action::setParameter);
         return action;
     }
 
@@ -95,25 +94,38 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
                 result.addNode((TemplateNode) this.visitLiteralAtom((TartarusParser.LiteralAtomContext)child));
             } else if (child instanceof TerminalNode) {
                 Literal literalStr = new Literal();
-                literalStr.setType(VariableTypes.STRING);
+                literalStr.setType(VariableTypes.ENUM(child.getText()));
                 literalStr.setValue(child.getText());
                 result.addNode(literalStr);
             }
         }
-        if (result.getNodes().size() > 0) {
+        if (!result.getNodes().isEmpty()) {
+            // Trim the spaces at the beginning and end of the string
             TemplateNode first = result.getNodes().get(0);
-            if (first instanceof Literal) {
-                Literal firstLiteral = (Literal) first;
-                firstLiteral.setType(VariableTypes.STRING);
-                firstLiteral.setValue(firstLiteral.getValue().replaceAll("^\\s+", ""));
+            if (first instanceof Literal firstLiteral) {
+                String value = firstLiteral.getValue().replaceAll("^\\s+", "");
+                if (!value.isEmpty()) {
+                    firstLiteral.setType(VariableTypes.ENUM(value));
+                    firstLiteral.setValue(value);
+                } else {
+                    result.getNodes().remove(0);
+                }
             }
             TemplateNode last = result.getNodes().get(result.getNodes().size() - 1);
-            if (last instanceof Literal) {
-                Literal lastLiteral = (Literal) last;
-                lastLiteral.setType(VariableTypes.STRING);
-                lastLiteral.setValue(lastLiteral.getValue().replaceAll("\\s+$", ""));
+            if (last instanceof Literal lastLiteral) {
+                String value = lastLiteral.getValue().replaceAll("\\s+$", "");
+                if (!value.isEmpty()) {
+                    lastLiteral.setType(VariableTypes.ENUM(value));
+                    lastLiteral.setValue(value);
+                } else {
+                    result.getNodes().remove(result.getNodes().size() - 1);
+                }
+            }
+            if (result.getNodes().size() == 1) {
+                return result.getNodes().get(0);
             }
         }
+
         return result;
     }
 
@@ -248,8 +260,9 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
         Literal literal= new Literal();
         String text = ctx.getText();
         if (text.startsWith("\"")) {
-            literal.setType(VariableTypes.STRING);
-            literal.setValue(text.substring(1, text.length() - 1));
+            String value = text.substring(1, text.length() - 1);
+            literal.setType(VariableTypes.ENUM(value));
+            literal.setValue(value);
         } else {
             literal.setType(VariableTypes.NUMBER);
             literal.setValue(text);

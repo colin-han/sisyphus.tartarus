@@ -1,9 +1,6 @@
 package info.colinhan.sisyphus.tartarus;
 
-import info.colinhan.sisyphus.tartarus.model.Action;
-import info.colinhan.sisyphus.tartarus.model.Flow;
-import info.colinhan.sisyphus.tartarus.model.TemplateString;
-import info.colinhan.sisyphus.tartarus.model.WhileStatement;
+import info.colinhan.sisyphus.tartarus.model.*;
 import info.colinhan.sisyphus.tartarus.utils.MockVariableValidationContext;
 import info.colinhan.sisyphus.tartarus.utils.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -20,9 +17,10 @@ class ScriptToModelTransformerTest {
         assertInstanceOf(Action.class, flow.getBlock().getStatements().get(0));
         Action a1 = (Action) flow.getBlock().getStatements().get(0);
         assertNotNull(a1.getPositionedParameter());
-        assertEquals(1, a1.getNamedParameters().size());
+        assertInstanceOf(Reference.class, a1.getParameter("by"));
+        assertEquals(2, a1.getParameters().size());
         Action a2 = (Action) flow.getBlock().getStatements().get(1);
-        assertInstanceOf(TemplateString.class, a2.getNamedParameters().get("method"));
+        assertInstanceOf(Literal.class, a2.getParameters().get("method"));
     }
 
     @Test

@@ -13,6 +13,10 @@ public class MockVariableValidationContext implements VariableValidationContext 
 
     @Override
     public VariableType getVariableType(ReferenceType type, String name) {
-        return VariableTypes.UNKNOWN;
+        return switch (type) {
+            case VARIABLE, ENV -> VariableTypes.STRING;
+            case RULE -> VariableTypes.USER;
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 }

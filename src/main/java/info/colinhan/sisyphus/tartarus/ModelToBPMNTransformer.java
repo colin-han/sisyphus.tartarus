@@ -47,6 +47,7 @@ public class ModelToBPMNTransformer extends AbstractModelVisitor<Void> {
         public boolean hasCondition() {
             return this.condition != null;
         }
+
         public Condition getCondition() {
             return condition;
         }
@@ -136,14 +137,9 @@ public class ModelToBPMNTransformer extends AbstractModelVisitor<Void> {
 
             writer.writeStartElement("userTask");
             writer.writeAttribute("id", currentId);
-            if (action.getNamedParameters().containsKey("by")) {
-                TemplateString by = action.getNamedParameters().get("by");
-                if (by.getNodes().size() != 1) {
-                    throw TartarusExecutionException.withWrapper("'by' parameter should be a ref to user or group!");
-                }
-                TemplateNode templateNode = by.getNodes().get(0);
-                if (templateNode instanceof Reference) {
-                    Reference ref = (Reference) templateNode;
+            if (action.hasParameter("by")) {
+                ValueSource by = action.getParameter("by");
+                if (by instanceof Reference ref) {
                     if (ref.getType() == ReferenceType.RULE) {
                         writer.writeAttribute("http://activiti.org/bpmn", "candidateGroups", ref.getVariableName());
                     } else if (ref.getType() == ReferenceType.VARIABLE) {
@@ -151,6 +147,8 @@ public class ModelToBPMNTransformer extends AbstractModelVisitor<Void> {
                     } else {
                         throw TartarusExecutionException.withWrapper("Env type reference is not supported in 'by' parameter!");
                     }
+                } else {
+                    throw TartarusExecutionException.withWrapper("'by' parameter should be a ref to user or group!");
                 }
             }
             writer.writeEndElement();

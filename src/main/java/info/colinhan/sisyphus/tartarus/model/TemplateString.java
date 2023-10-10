@@ -41,13 +41,6 @@ public class TemplateString extends AbstractNode implements ValueSource {
         }
     }
 
-    public static VariableType getValueType(TemplateString templateString, VariableValidationContext context) {
-        if (templateString == null) {
-            return null;
-        }
-        return templateString.getValueType(context);
-    }
-
     @Override
     public <T> T accept(ModelVisitor<? extends T> visitor) {
         return visitor.visitTemplateString(this);
