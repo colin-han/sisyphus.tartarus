@@ -1,7 +1,7 @@
 if ( $a >= 123) then
-    : do something;
+    : nop something;
 elseif (! $def) then
-    : do other thing for ${user:aaa} ;
+    : nop other thing for ${user:aaa} ;
 else
-    : do something else;
+    : nop something else;
 end

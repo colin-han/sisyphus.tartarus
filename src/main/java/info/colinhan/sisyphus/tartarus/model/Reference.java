@@ -3,9 +3,12 @@ package info.colinhan.sisyphus.tartarus.model;
 import info.colinhan.sisyphus.context.VariableValidationContext;
 import info.colinhan.sisyphus.model.ReferenceType;
 import info.colinhan.sisyphus.model.VariableType;
+import info.colinhan.sisyphus.model.VariableTypes;
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.List;
+
+import static info.colinhan.sisyphus.model.VariableTypes.UNKNOWN;
 
 public class Reference extends AbstractNode implements TemplateNode, ValueSource, ArraySource, Condition {
     private ReferenceType type = ReferenceType.VARIABLE;
@@ -50,6 +53,16 @@ public class Reference extends AbstractNode implements TemplateNode, ValueSource
     @Override
     public List<ValueSource> getArray(ExecutionContext context) {
         return null;
+    }
+
+    @Override
+    public VariableType getElementType(VariableValidationContext context) {
+        VariableType thisType = this.getValueType(context);
+        if (VariableTypes.isArray(thisType)) {
+            return VariableTypes.getElementType(thisType);
+        } else {
+            return UNKNOWN;
+        }
     }
 
     @Override

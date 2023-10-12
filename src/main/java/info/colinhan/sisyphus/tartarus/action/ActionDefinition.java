@@ -8,11 +8,13 @@ import info.colinhan.sisyphus.tartarus.exceptions.TartarusValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class ActionDefinition {
     private final String name;
     private final List<ParameterDefinition> namedParameters = new ArrayList<>();
     private ParameterDefinition defaultParameter = new ParameterDefinition("default", VariableTypes.STRING, null);
+    private boolean allowUknownNamedParameters = false;
 
     public ActionDefinition(String name) {
         this.name = name;
@@ -62,6 +64,11 @@ public final class ActionDefinition {
         return this;
     }
 
+    public ActionDefinition allowUnknownNameParameters() {
+        this.allowUknownNamedParameters = true;
+        return this;
+    }
+
     public void validate(VariableType positionedParameterValueType,
                          Map<String, VariableType> namedParameterTypes,
                          VariableValidationContext context) throws TartarusValidationException {
@@ -73,16 +80,27 @@ public final class ActionDefinition {
             throw new TartarusValidationException("Invalid default parameter: " + result);
         }
 
+        Set<String> namedParameterNames = namedParameterTypes.keySet();
         for (ParameterDefinition namedParameter : this.namedParameters) {
-            VariableType type = namedParameterTypes.get(namedParameter.getName());
-            if (type == null && namedParameter.isRequired()) {
-                throw new TartarusValidationException("Missing named parameter: " + namedParameter.getName());
+            String theName = namedParameter.getName();
+            VariableType type = namedParameterTypes.get(theName);
+            namedParameterNames.remove(theName);
+            if (type == null) {
+                if (namedParameter.isRequired()) {
+                    throw new TartarusValidationException("Missing named parameter: " + theName);
+                } else {
+                    continue;
+                }
             }
 
             result = namedParameter.getType().validate(context, type);
             if (result != null) {
-                throw new TartarusValidationException("Invalid named parameter: " + result);
+                throw new TartarusValidationException("Invalid named parameter for \"" + theName + "\": " + result);
             }
+        }
+
+        if (!namedParameterNames.isEmpty()) {
+            throw new TartarusValidationException("Unknown named parameter(s): " + namedParameterNames);
         }
     }
 }

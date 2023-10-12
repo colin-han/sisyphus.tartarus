@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
-    private final VariableValidationContext context;
+    private final ModelParseContext context;
 
-    public ScriptToModelTransformer(VariableValidationContext context) {
+    public ScriptToModelTransformer(ModelParseContext context) {
         this.context = context;
     }
 
@@ -149,19 +149,33 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
 
     @Override
     public Node visitWhileStatement(TartarusParser.WhileStatementContext ctx) {
+        String variableName = ctx.Id().getText();
+        ArraySource arraySource = (ArraySource) this.visit(ctx.arrayExpression());
+        context.pushFrame();
+        context.setVariableType(variableName, arraySource.getElementType(context));
+
         WhileStatement result = new WhileStatement(false);
-        result.setVariableName(ctx.Id().getText());
-        result.setArraySource((ArraySource) this.visit(ctx.arrayExpression()));
+        result.setVariableName(variableName);
+        result.setArraySource(arraySource);
         result.setBlock((Block) this.visit(ctx.block()));
+
+        context.popFrame();
         return result;
     }
 
     @Override
     public Node visitParallelStatement(TartarusParser.ParallelStatementContext ctx) {
+        String variableName = ctx.Id().getText();
+        ArraySource arraySource = (ArraySource) this.visit(ctx.arrayExpression());
+        context.pushFrame();
+        context.setVariableType(variableName, arraySource.getElementType(context));
+
         WhileStatement result = new WhileStatement(true);
-        result.setVariableName(ctx.Id().getText());
-        result.setArraySource((ArraySource) this.visit(ctx.arrayExpression()));
+        result.setVariableName(variableName);
+        result.setArraySource(arraySource);
         result.setBlock((Block) this.visit(ctx.block()));
+
+        context.popFrame();
         return result;
     }
 

@@ -1,3 +1,3 @@
 parallel (holder in $stakeholders)
-  : do anythings with $holder;
+  : nop anythings with $holder;
 end

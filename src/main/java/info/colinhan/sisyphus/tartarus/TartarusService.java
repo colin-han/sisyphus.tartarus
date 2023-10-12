@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class TartarusService {
-    public static Flow parseFlow(String code, VariableValidationContext context) {
+    public static Flow parseFlow(String code, ModelParseContext context) {
         ErrorListener errors = new ErrorListener();
         TartarusLexer lexer = new TartarusLexer(CharStreams.fromString(code));
         lexer.removeErrorListeners();
@@ -36,7 +36,7 @@ public class TartarusService {
         return (Flow) modelTransformer.visit(diagram);
     }
 
-    public static String generateSVG(String code, VariableValidationContext context) {
+    public static String generateSVG(String code, ModelParseContext context) {
         Flow flow = parseFlow(code, context);
         StringBuilder builder = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(builder);

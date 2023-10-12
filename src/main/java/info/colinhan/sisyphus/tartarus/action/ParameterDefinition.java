@@ -9,6 +9,10 @@ public final class ParameterDefinition {
     private final Object defaultValue;
     private final boolean required;
 
+    public ParameterDefinition(String name, VariableType type) {
+        this(name, type, null);
+    }
+
     public ParameterDefinition(String name, VariableType type, Object defaultValue) {
         this.name = name;
         this.type = type;

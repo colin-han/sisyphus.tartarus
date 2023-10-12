@@ -35,7 +35,7 @@ public class TestUtils {
     }
 
     public static Flow readFlow(String filename) {
-        ScriptToModelTransformer transformer = new ScriptToModelTransformer(new MockVariableValidationContext());
+        ScriptToModelTransformer transformer = new ScriptToModelTransformer(new MockModelParseContext());
         return (Flow)transformer.visit(parseFile(filename));
     }
 }

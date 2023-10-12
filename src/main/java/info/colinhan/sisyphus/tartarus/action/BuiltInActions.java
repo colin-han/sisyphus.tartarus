@@ -5,6 +5,8 @@ import info.colinhan.sisyphus.model.VariableTypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import static info.colinhan.sisyphus.model.VariableTypes.*;
+
 public final class BuiltInActions {
     private BuiltInActions() {}
 
@@ -19,15 +21,23 @@ public final class BuiltInActions {
     }
 
     static {
-        register(new ActionDefinition("showForm")
+        ParameterDefinition byParameter = new ParameterDefinition("by", USER);
+        ParameterDefinition atLatestParameter = new ParameterDefinition("atLatest", OPTIONAL(STRING));
+        register(new ActionDefinition("nop")
+                .allowUnknownNameParameters());
+        register(new ActionDefinition("fillForm")
                 .defaultParameter("formName")
-                .namedParameter("by", VariableTypes.USER));
+                .namedParameter(byParameter)
+                .namedParameter(atLatestParameter));
         register(new ActionDefinition("confirm")
                 .defaultParameter("message")
-                .namedParameter("by", VariableTypes.USER));
+                .namedParameter(byParameter));
         register(new ActionDefinition("callApi")
                 .defaultParameter("url")
-                .namedParameter("method", VariableTypes.ENUM("get", "post", "put", "delete"), "post")
-                .namedParameter("body", VariableTypes.OPTIONAL(VariableTypes.STRING)));
+                .namedParameter("method", ENUM("get", "post", "put", "delete"), "post")
+                .namedParameter("headers", OPTIONAL(STRING))
+                .namedParameter("body", OPTIONAL(STRING))
+                .namedParameter("auth", OPTIONAL(STRING))
+                .namedParameter("onError", ENUM("failed", "paused", "ignored"), "failed"));
     }
 }
