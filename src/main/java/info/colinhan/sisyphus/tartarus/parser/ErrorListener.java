@@ -3,15 +3,22 @@ package info.colinhan.sisyphus.tartarus.parser;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorListener extends BaseErrorListener {
-    private final List<String> errors = new ArrayList<>();
+    private final List<ParseError> errors = new ArrayList<>();
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-        errors.add(String.format("[%d,%d] %s", line, charPositionInLine, msg));
+        Token token = (Token) offendingSymbol;
+
+        int startCharIndex = token.getStartIndex();
+        int stopCharIndex = token.getStopIndex();
+        int length = stopCharIndex - startCharIndex + 1;
+
+        errors.add(new ParseError(line, charPositionInLine, length, msg, e));
         super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
     }
 
@@ -19,7 +26,7 @@ public class ErrorListener extends BaseErrorListener {
         return !errors.isEmpty();
     }
 
-    public List<String> getErrors() {
+    public List<ParseError> getErrors() {
         return errors;
     }
 }

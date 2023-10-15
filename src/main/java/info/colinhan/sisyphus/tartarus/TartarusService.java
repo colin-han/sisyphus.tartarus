@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus;
 
-import info.colinhan.sisyphus.context.VariableValidationContext;
+import info.colinhan.sisyphus.tartarus.exceptions.TartarusParserException;
 import info.colinhan.sisyphus.tartarus.model.Flow;
 import info.colinhan.sisyphus.tartarus.parser.ErrorListener;
 import info.colinhan.sisyphus.tartarus.parser.TartarusLexer;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class TartarusService {
-    public static Flow parseFlow(String code, ModelParseContext context) {
+    public static Flow parseFlow(String code, ModelParseContext context) throws TartarusParserException {
         ErrorListener errors = new ErrorListener();
         TartarusLexer lexer = new TartarusLexer(CharStreams.fromString(code));
         lexer.removeErrorListeners();
@@ -28,15 +28,18 @@ public class TartarusService {
         parser.addErrorListener(errors);
         TartarusParser.DiagramContext diagram = parser.diagram();
         if (errors.hasError()) {
-            errors.getErrors().forEach(System.err::println);
-            throw new RuntimeException("Parse error!");
+            throw new TartarusParserException(errors.getErrors());
         }
 
         ScriptToModelTransformer modelTransformer = new ScriptToModelTransformer(context);
-        return (Flow) modelTransformer.visit(diagram);
+        try {
+            return (Flow) modelTransformer.visit(diagram);
+        } catch (RuntimeException e) {
+            throw TartarusParserException.unwrap(e);
+        }
     }
 
-    public static String generateSVG(String code, ModelParseContext context) {
+    public static String generateSVG(String code, ModelParseContext context) throws TartarusParserException {
         Flow flow = parseFlow(code, context);
         StringBuilder builder = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(builder);
@@ -53,6 +56,6 @@ public class TartarusService {
             throw new RuntimeException(e);
         }
 
-        return new String(os.toByteArray(), StandardCharsets.UTF_8);
+        return os.toString(StandardCharsets.UTF_8);
     }
 }

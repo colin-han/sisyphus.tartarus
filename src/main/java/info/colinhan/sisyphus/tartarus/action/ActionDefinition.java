@@ -3,7 +3,7 @@ package info.colinhan.sisyphus.tartarus.action;
 import info.colinhan.sisyphus.context.VariableValidationContext;
 import info.colinhan.sisyphus.model.VariableType;
 import info.colinhan.sisyphus.model.VariableTypes;
-import info.colinhan.sisyphus.tartarus.exceptions.TartarusValidationException;
+import info.colinhan.sisyphus.tartarus.exceptions.TartarusParserException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,13 +71,13 @@ public final class ActionDefinition {
 
     public void validate(VariableType positionedParameterValueType,
                          Map<String, VariableType> namedParameterTypes,
-                         VariableValidationContext context) throws TartarusValidationException {
+                         VariableValidationContext context) throws TartarusParserException {
         if (positionedParameterValueType == null && this.defaultParameter.isRequired()) {
-            throw new TartarusValidationException("Missing default parameter!");
+            throw new TartarusParserException("Missing default parameter!");
         }
         String result = this.defaultParameter.getType().validate(context, positionedParameterValueType);
         if (result != null) {
-            throw new TartarusValidationException("Invalid default parameter: " + result);
+            throw new TartarusParserException("Invalid default parameter: " + result);
         }
 
         Set<String> namedParameterNames = namedParameterTypes.keySet();
@@ -87,7 +87,7 @@ public final class ActionDefinition {
             namedParameterNames.remove(theName);
             if (type == null) {
                 if (namedParameter.isRequired()) {
-                    throw new TartarusValidationException("Missing named parameter: " + theName);
+                    throw new TartarusParserException("Missing named parameter: " + theName);
                 } else {
                     continue;
                 }
@@ -95,12 +95,12 @@ public final class ActionDefinition {
 
             result = namedParameter.getType().validate(context, type);
             if (result != null) {
-                throw new TartarusValidationException("Invalid named parameter for \"" + theName + "\": " + result);
+                throw new TartarusParserException("Invalid named parameter for \"" + theName + "\": " + result);
             }
         }
 
         if (!namedParameterNames.isEmpty()) {
-            throw new TartarusValidationException("Unknown named parameter(s): " + namedParameterNames);
+            throw new TartarusParserException("Unknown named parameter(s): " + namedParameterNames);
         }
     }
 }

@@ -8,7 +8,7 @@ import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.List;
 
-import static info.colinhan.sisyphus.model.VariableTypes.UNKNOWN;
+import static info.colinhan.sisyphus.model.VariableTypes.*;
 
 public class Reference extends AbstractNode implements TemplateNode, ValueSource, ArraySource, Condition {
     private ReferenceType type = ReferenceType.VARIABLE;
@@ -47,6 +47,14 @@ public class Reference extends AbstractNode implements TemplateNode, ValueSource
 
     @Override
     public VariableType getValueType(VariableValidationContext context) {
+        if (context == null) {
+            // TODO: temporal implementation;
+            return switch (this.type) {
+                case VARIABLE -> STRING;
+                case RULE -> USER;
+                case ENV -> STRING;
+            };
+        }
         return context.getVariableType(this.type, this.variableName);
     }
 

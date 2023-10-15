@@ -1,12 +1,11 @@
 package info.colinhan.sisyphus.tartarus;
 
-import info.colinhan.sisyphus.context.VariableValidationContext;
 import info.colinhan.sisyphus.model.ReferenceType;
 import info.colinhan.sisyphus.model.VariableType;
 import info.colinhan.sisyphus.model.VariableTypes;
 import info.colinhan.sisyphus.tartarus.action.ActionDefinition;
 import info.colinhan.sisyphus.tartarus.action.BuiltInActions;
-import info.colinhan.sisyphus.tartarus.exceptions.TartarusValidationException;
+import info.colinhan.sisyphus.tartarus.exceptions.TartarusParserException;
 import info.colinhan.sisyphus.tartarus.model.*;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParser;
 import info.colinhan.sisyphus.tartarus.parser.TartarusParserBaseVisitor;
@@ -67,7 +66,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
 
         ActionDefinition definition = BuiltInActions.get(name);
         if (definition == null) {
-            throw TartarusValidationException.withWrapper("Unknown action: " + name);
+            throw TartarusParserException.withWrapper("Unknown action: " + name);
         }
 
         try {
@@ -76,7 +75,7 @@ public class ScriptToModelTransformer extends TartarusParserBaseVisitor<Node> {
                     namedParameterTypes,
                     context
             );
-        } catch (TartarusValidationException e) {
+        } catch (TartarusParserException e) {
             throw new RuntimeException(e);
         }
 
