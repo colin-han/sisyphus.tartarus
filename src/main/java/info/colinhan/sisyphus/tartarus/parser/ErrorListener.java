@@ -1,5 +1,6 @@
 package info.colinhan.sisyphus.tartarus.parser;
 
+import info.colinhan.sisyphus.exception.ParseError;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
