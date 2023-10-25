@@ -1,6 +1,6 @@
 package info.colinhan.sisyphus.tartarus;
 
-import info.colinhan.sisyphus.exception.ParserException;
+import info.colinhan.sisyphus.exception.ParseException;
 import info.colinhan.sisyphus.tartarus.model.Flow;
 import info.colinhan.sisyphus.tartarus.parser.ErrorListener;
 import info.colinhan.sisyphus.tartarus.parser.TartarusLexer;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class TartarusService {
-    public static Flow parseFlow(String code, ModelParseContext context) throws ParserException {
+    public static Flow parseFlow(String code, ModelParseContext context) throws ParseException {
         ErrorListener errors = new ErrorListener();
         TartarusLexer lexer = new TartarusLexer(CharStreams.fromString(code));
         lexer.removeErrorListeners();
@@ -28,18 +28,18 @@ public class TartarusService {
         parser.addErrorListener(errors);
         TartarusParser.DiagramContext diagram = parser.diagram();
         if (errors.hasError()) {
-            throw new ParserException(errors.getErrors());
+            throw new ParseException(errors.getErrors());
         }
 
         ScriptToModelTransformer modelTransformer = new ScriptToModelTransformer(context);
         try {
             return (Flow) modelTransformer.visit(diagram);
         } catch (RuntimeException e) {
-            throw ParserException.unwrap(e);
+            throw ParseException.unwrap(e);
         }
     }
 
-    public static String generateSVG(String code, ModelParseContext context) throws ParserException {
+    public static String generateSVG(String code, ModelParseContext context) throws ParseException {
         Flow flow = parseFlow(code, context);
         StringBuilder builder = new StringBuilder();
         ModelToPlantUmlTransformer transformer = new ModelToPlantUmlTransformer(builder);

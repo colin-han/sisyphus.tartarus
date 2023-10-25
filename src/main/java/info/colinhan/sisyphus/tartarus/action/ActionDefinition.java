@@ -3,7 +3,7 @@ package info.colinhan.sisyphus.tartarus.action;
 import info.colinhan.sisyphus.context.VariableValidationContext;
 import info.colinhan.sisyphus.model.VariableType;
 import info.colinhan.sisyphus.model.VariableTypes;
-import info.colinhan.sisyphus.exception.ParserException;
+import info.colinhan.sisyphus.exception.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,13 +71,13 @@ public final class ActionDefinition {
 
     public void validate(VariableType positionedParameterValueType,
                          Map<String, VariableType> namedParameterTypes,
-                         VariableValidationContext context) throws ParserException {
+                         VariableValidationContext context) throws ParseException {
         if (positionedParameterValueType == null && this.defaultParameter.isRequired()) {
-            throw new ParserException("Missing default parameter!");
+            throw new ParseException("Missing default parameter!");
         }
         String result = this.defaultParameter.getType().validate(context, positionedParameterValueType);
         if (result != null) {
-            throw new ParserException("Invalid default parameter: " + result);
+            throw new ParseException("Invalid default parameter: " + result);
         }
 
         Set<String> namedParameterNames = namedParameterTypes.keySet();
@@ -87,7 +87,7 @@ public final class ActionDefinition {
             namedParameterNames.remove(theName);
             if (type == null) {
                 if (namedParameter.isRequired()) {
-                    throw new ParserException("Missing named parameter: " + theName);
+                    throw new ParseException("Missing named parameter: " + theName);
                 } else {
                     continue;
                 }
@@ -95,12 +95,12 @@ public final class ActionDefinition {
 
             result = namedParameter.getType().validate(context, type);
             if (result != null) {
-                throw new ParserException("Invalid named parameter for \"" + theName + "\": " + result);
+                throw new ParseException("Invalid named parameter for \"" + theName + "\": " + result);
             }
         }
 
         if (!namedParameterNames.isEmpty()) {
-            throw new ParserException("Unknown named parameter(s): " + namedParameterNames);
+            throw new ParseException("Unknown named parameter(s): " + namedParameterNames);
         }
     }
 }
