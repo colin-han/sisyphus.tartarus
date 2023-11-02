@@ -26,7 +26,7 @@ public class Literal extends AbstractNode implements TemplateNode, ValueSource {
 
     @Override
     public Object getValue(ExecutionContext context) {
-        return null;
+        return value;
     }
 
     @Override

@@ -26,8 +26,9 @@ public class TemplateString extends AbstractNode implements ValueSource {
 
     @Override
     public Object getValue(ExecutionContext context) {
-        // TODO:
-        return null;
+        return this.nodes.stream()
+                .map(node -> node.getValue(context).toString())
+                .collect(Collectors.joining());
     }
 
     @Override

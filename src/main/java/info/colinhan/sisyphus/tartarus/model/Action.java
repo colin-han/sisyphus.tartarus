@@ -1,6 +1,7 @@
 package info.colinhan.sisyphus.tartarus.model;
 
 import info.colinhan.sisyphus.tartarus.action.ActionDefinition;
+import info.colinhan.sisyphus.tartarus.action.BuiltInActions;
 import info.colinhan.sisyphus.tartarus.runtime.ExecutionContext;
 
 import java.util.*;
@@ -8,8 +9,8 @@ import java.util.*;
 public class Action extends AbstractStatement implements Statement {
     private String id;
     private final String name;
-    private final ActionDefinition definition;
     private final Map<String, ValueSource> parameters = new HashMap<>();
+    private ActionDefinition definition = null;
 
     public Action(ActionDefinition definition, String name) {
         this.definition = definition;
@@ -33,6 +34,9 @@ public class Action extends AbstractStatement implements Statement {
     }
 
     public ActionDefinition getDefinition() {
+        if (this.definition == null) {
+            this.definition = BuiltInActions.get(this.name);
+        }
         return definition;
     }
 
@@ -51,7 +55,7 @@ public class Action extends AbstractStatement implements Statement {
     public Map<String, ValueSource> getNamedParameters() {
         Map<String, ValueSource> namedParameters = new HashMap<>();
         this.parameters.forEach((name, value) -> {
-            if (!name.equals(this.definition.getDefaultParameter().getName())) {
+            if (!name.equals(this.getDefinition().getDefaultParameter().getName())) {
                 namedParameters.put(name, value);
             }
         });
@@ -59,7 +63,7 @@ public class Action extends AbstractStatement implements Statement {
     }
 
     public ValueSource getPositionedParameter() {
-        return this.getParameter(this.definition.getDefaultParameter().getName());
+        return this.getParameter(this.getDefinition().getDefaultParameter().getName());
     }
 
     @Override

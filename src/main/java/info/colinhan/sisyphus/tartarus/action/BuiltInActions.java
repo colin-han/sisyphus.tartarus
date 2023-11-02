@@ -54,7 +54,7 @@ public final class BuiltInActions {
     public static final ParameterDefinition PARAM_AT_LATEST = new ParameterDefinition(PARAM_NAME_AT_LATEST, OPTIONAL(STRING));
 
     public static final ActionDefinition ACTION_FILL_FORM = new ActionDefinition(ACTION_NAME_FILL_FORM)
-            .defaultParameter(PARAM_NAME_FORM_NAME)
+            .defaultParameter(PARAM_NAME_FORM_NAME, STRING)
             .namedParameter(PARAM_BY)
             .namedParameter(PARAM_AT_LATEST);
 
